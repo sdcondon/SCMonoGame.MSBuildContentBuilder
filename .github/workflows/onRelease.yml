@@ -1,0 +1,54 @@
+name: Push NuGet Packages
+
+on: 
+  release:
+    types: [published]
+
+jobs:
+  push-packages:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+      actions: write
+      packages: write
+    env:
+      NuGetPackageSourceCredentials_github_sdcondon: Username=sdcondon;Password=${{ secrets.PACKAGE_PAT }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up dotnet
+      uses: actions/setup-dotnet@v5
+
+    - name: Get package version
+      id: getPackageVersion
+      shell: bash
+      run: echo VERSION=${GITHUB_REF/refs\/tags\//} >> $GITHUB_OUTPUT
+
+    - name: Build
+      run: dotnet build -c "Release DesktopVK" -p:Version=${{ steps.getPackageVersion.outputs.VERSION }}
+      working-directory: ./src/SCGames.MonoGame.ContentBuilder
+
+    - name: Push packages
+      run: dotnet nuget push "**/*.nupkg" -s "https://nuget.pkg.github.com/sdcondon" -k "${{ secrets.GITHUB_TOKEN }}"
+      working-directory: ./src
+
+    - name: Update 'latest-release' tag
+      uses: actions/github-script@v5
+      with:
+        script: |
+          github.rest.git.updateRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: 'tags/latest-release',
+            sha: context.sha
+          }).catch(err => {
+            if (err.status !== 422) throw err;
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/latest-release',
+              sha: context.sha
+            });
+          });

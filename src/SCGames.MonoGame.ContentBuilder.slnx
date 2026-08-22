@@ -1,0 +1,25 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug DesktopVK" />
+    <BuildType Name="Debug WindowsDX12" />
+    <BuildType Name="Release DesktopVK" />
+    <BuildType Name="Release WindowsDX12" />
+  </Configurations>
+  <Folder Name="/Repo Items/">
+    <File Path="../.gitattributes" />
+    <File Path="../.github/workflows/onPush.yml" />
+    <File Path="../.github/workflows/onRelease.yml" />
+    <File Path="../.gitignore" />
+    <File Path="../README.md" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Exe.props" />
+    <File Path="nuget.config" />
+  </Folder>
+  <Project Path="SCGames.MonoGame.ContentBuilder/SCGames.MonoGame.ContentBuilder.csproj">
+    <BuildType Solution="Debug DesktopVK|*" Project="Debug" />
+    <BuildType Solution="Debug WindowsDX12|*" Project="Debug" />
+    <BuildType Solution="Release DesktopVK|*" Project="Release" />
+    <BuildType Solution="Release WindowsDX12|*" Project="Release" />
+  </Project>
+</Solution>
