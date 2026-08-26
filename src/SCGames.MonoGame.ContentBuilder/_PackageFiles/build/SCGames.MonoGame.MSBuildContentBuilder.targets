@@ -1,0 +1,39 @@
+﻿<Project>
+	<!-- It would be nice to be able to use a custom Task. That way, we'd not have to deal with forming and 
+	     interpreting a command line, and logging of multi-line messages would be easier since we wouldn't
+		 need to go via console output. There are issues with this approach, though. See the documentation of
+		 the Task class for details. -->
+	<!--<UsingTask 
+		TaskName="$(MSBuildThisFileName).Task.ScriptedContentBuilderTask"
+		AssemblyFile="$(MSBuildThisFileDirectory)tasks\net10.0\$(MSBuildThisFileName).dll"
+		TaskFactory="TaskHostFactory"
+		Runtime="NET"/>-->
+
+	<PropertyGroup>
+		<MGCBWorkingDir Condition="'$(MGCBWorkingDir)' == ''">.</MGCBWorkingDir>
+		<MGCBSourceDir Condition="'$(MGCBSourceDir)' == ''">$(MSBuildProjectDirectory)/Content</MGCBSourceDir>
+		<MGCBIntermediateDir Condition="'$(MGCBIntermediateDir)' == ''">$(MSBuildProjectDirectory)/obj/Content</MGCBIntermediateDir>
+		<MGCBOutputDir Condition="'$(MGCBOutputDir)' == ''">$(OutputPath.Trim('\\'))</MGCBOutputDir>
+		<MGCBGraphicsProfile Condition="'$(MGCBGraphicsProfile)' == ''">HiDef</MGCBGraphicsProfile>
+		<MGCBTargetPlatform Condition="'$(MGCBTargetPlatform)' == ''">$(MonoGamePlatform)</MGCBTargetPlatform>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<MGCBScriptFiles Include="**/*.mgcbs" />
+	</ItemGroup>	
+	
+	<Target Name="BuildMonoGameContent" BeforeTargets="AfterBuild">
+
+		<Exec Command="dotnet &quot;$(MSBuildThisFileDirectory)tasks\net10.0\$(MSBuildThisFileName).dll&quot; -f &quot;@(MGCBScriptFiles)&quot; -d &quot;$(MGCBWorkingDir)&quot; -s &quot;$(MGCBSourceDir)&quot; -i &quot;$(MGCBIntermediateDir)&quot; -o &quot;$(MGCBOutputDir)&quot; -p &quot;$(MGCBTargetPlatform)&quot; -g &quot;$(MGCBGraphicsProfile)&quot;" />
+		
+		<!--<ScriptedContentBuilderTask
+			ScriptFiles="@(MGCBScriptFiles)"
+			WorkingDirectory="$(MGCBWorkingDir)"
+			SourceDirectory="$(MGCBSourceDir)"
+			IntermediateDirectory="$(MGCBIntermediateDir)"
+			OutputDirectory="$(MGCBOutputDir)"
+			GraphicsProfile="$(MGCBGraphicsProfile)"
+			TargetPlatform="$(MGCBTargetPlatform)" />-->
+		
+	</Target>
+</Project>

@@ -1,0 +1,17 @@
+﻿Include("Models/suzanne.fbx", new FbxImporter(), new ModelProcessor()
+{
+	//ColorKeyColor = new(0, 0, 0, 0),
+	ColorKeyEnabled = true,
+	DefaultEffect = MaterialProcessorDefaultEffect.BasicEffect,
+	GenerateMipmaps = true,
+	GenerateTangentFrames = false,
+	PremultiplyTextureAlpha = true,
+	PremultiplyVertexColors = true,
+	ResizeTexturesToPowerOfTwo = false,
+	RotationX = 0,
+	RotationY = 0,
+	RotationZ = 0,
+	Scale = 1,
+	SwapWindingOrder = false,
+	TextureFormat = TextureProcessorOutputFormat.Compressed,
+});

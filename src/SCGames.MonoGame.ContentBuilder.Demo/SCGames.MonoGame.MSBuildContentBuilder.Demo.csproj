@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../Exe.props" />
+	
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<RollForward>Major</RollForward>
+		<PublishReadyToRun>false</PublishReadyToRun>
+		<TieredCompilation>false</TieredCompilation>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Icon.ico" />
+		<None Remove="Icon.bmp" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Icon.ico">
+			<LogicalName>Icon.ico</LogicalName>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Icon.bmp">
+			<LogicalName>Icon.bmp</LogicalName>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="SCGames.MonoGame" Version="0.162.0" />
+		<PackageReference Include="SCGames.MonoGame.MSBuildContentBuilder" Version="0.0.0-local.*" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(MonoGamePlatform)' == 'DesktopVK'">
+		<PackageReference Include="MonoGame.Runtime.Mac.Vulkan" Version="3.8.*" />
+		<PackageReference Include="MonoGame.Runtime.Linux.Vulkan" Version="3.8.*" />
+		<PackageReference Include="MonoGame.Runtime.Windows.Vulkan" Version="3.8.*" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(MonoGamePlatform)' == 'WindowsDX12'">
+		<PackageReference Include="MonoGame.Runtime.Windows.DX12" Version="3.8.*" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Content\Fonts\Roboto\" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Content\Fonts\Roboto\Roboto-Regular.ttf">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>
