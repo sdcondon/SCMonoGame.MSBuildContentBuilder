@@ -15,3 +15,8 @@
 	SwapWindingOrder = false,
 	TextureFormat = TextureProcessorOutputFormat.Compressed,
 });
+
+Include<WildcardRule>("Shaders/*.fx", new EffectImporter(), new EffectProcessor()
+{
+    DebugMode = EffectProcessorDebugMode.Auto,
+});

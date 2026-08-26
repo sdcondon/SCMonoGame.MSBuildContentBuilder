@@ -13,7 +13,7 @@ public static class Program
 
     public static int Main(string[] args)
     {
-        System.Diagnostics.Debugger.Launch();
+        ////System.Diagnostics.Debugger.Launch();
 
         if (!TryProcessCommandLine(args, out var builder, out var builderParams))
         {
