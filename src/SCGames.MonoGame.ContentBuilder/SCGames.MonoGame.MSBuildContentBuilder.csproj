@@ -38,9 +38,10 @@
 		<None Include="_PackageFiles\**\*" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
-	<!-- This next section is specific to this being a Nuget package that affects the MSBuild process.
-	     It's based on guidance here: https://learn.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation?view=visualstudio -->
-	
+	<!-- 
+	    This next section is specific to this being a Nuget package that affects the MSBuild process.
+	    It's based on guidance here: https://learn.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation?view=visualstudio
+	-->
 	<PropertyGroup>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<GenerateDependencyFile>true</GenerateDependencyFile>
@@ -67,46 +68,70 @@
 			     This is already precomputed in the ReferenceCopyLocalPaths items' DestinationSubPath, so reuse it here. -->
 			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
 
-			<!--<BuildOutputInPackage Include="$(OutputPath)$(MSBuildThisFileName).runtimeconfig.json" />-->
 			<BuildOutputInPackage Include="$(OutputPath)$(MSBuildThisFileName).deps.json" />
 		</ItemGroup>
 	</Target>
 	
 	<!--
 		MonoGame.Tool.* adds the binaries as content of consuming project - which isn't useful here (one wonders why these aren't done
-		as runtimes - which is after all what they are..). To work around, we take an explicit dependency to give us a path property,
-		turn off the addition of content that they do (DisableMonoGameToolAssets), and manually copy into the package instead.
+		as runtimes - which is after all what they are). To work around, we take an explicit dependency to give us a path property,
+		turn off the addition of content that they do (DisableMonoGameToolAssets), and instead manually copy into the package using a 
+		target that we specify with the TargetsForTfmSpecificContentInPackage property.
 	-->
 	<ItemGroup>
+		<PackageReference Include="MonoGame.Tool.Basisu" PrivateAssets="all" Version="2.0.2.1" GeneratePathProperty="true" />
+		<PackageReference Include="MonoGame.Tool.Crunch" PrivateAssets="all" Version="1.0.4.7" GeneratePathProperty="true" />
 		<PackageReference Include="MonoGame.Tool.Dxc" PrivateAssets="all" Version="1.9.2607.1" GeneratePathProperty="true" />
-	    <!-- todo: other tools -->
+		<PackageReference Include="MonoGame.Tool.FFmpeg" PrivateAssets="all" Version="7.0.0.10" GeneratePathProperty="true" />
+		<PackageReference Include="MonoGame.Tool.FFprobe" PrivateAssets="all" Version="7.0.0.10" GeneratePathProperty="true" />
 	</ItemGroup>
 	<PropertyGroup>
 		<DisableMonoGameToolAssets>True</DisableMonoGameToolAssets>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyToolsToPackage</TargetsForTfmSpecificBuildOutput>
+		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyToolsToPackage</TargetsForTfmSpecificContentInPackage>
 	</PropertyGroup>
 	<Target Name="CopyToolsToPackage" DependsOnTargets="ResolveReferences">
 		<ItemGroup>
-			<!-- ARRGH how annoying - https://github.com/dotnet/msbuild/issues/3121 means the commented out item doesnt work
-			     as the %(RecursiveDir) is erroneously blank. Which makes this group much bigger than it should be: -->
-			<!--<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\**\*" TargetPath="%(RecursiveDir)%(Filename)%(Extension)" />-->
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-arm64\bin\dxc" TargetPath="linux-arm64\bin\dxc" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-arm64\lib\libdxcompiler.so" TargetPath="linux-arm64\lib\libdxcompiler.so" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-x64\bin\dxc" TargetPath="linux-x64\bin\dxc" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-x64\lib\libdxcompiler.so" TargetPath="linux-x64\lib\libdxcompiler.so" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\osx\bin\dxc" TargetPath="osx\bin\dxc" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\osx\lib\libdxcompiler.dylib" TargetPath="osx\lib\libdxcompiler.dylib" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-arm64\dxc.exe" TargetPath="windows-arm64\dxc.exe" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-arm64\dxcompiler.dll" TargetPath="windows-arm64\dxcompiler.dll" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-arm64\LICENSE-LLVM.txt" TargetPath="windows-arm64\LICENSE-LLVM.txt" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-arm64\LICENSE-MIT.txt" TargetPath="windows-arm64\LICENSE-MIT.txt" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-arm64\LICENSE-MS.txt" TargetPath="windows-arm64\LICENSE-MS.txt" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-x64\dxc.exe" TargetPath="windows-x64\dxc.exe" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-x64\dxcompiler.dll" TargetPath="windows-x64\dxcompiler.dll" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-x64\LICENSE-LLVM.txt" TargetPath="windows-x64\LICENSE-LLVM.txt" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-x64\LICENSE-MIT.txt" TargetPath="windows-x64\LICENSE-MIT.txt" />
-			<BuildOutputInPackage Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-x64\LICENSE-MS.txt" TargetPath="windows-x64\LICENSE-MS.txt" />
+			<!--I'd LOVE to be able to use the recursive dir match stuff here to make this group much smaller,
+			    but for some reason MSBuild gets *very* confused by having more than one item with a %RecursiveDir in it -->
+			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Basisu)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->
+			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Crunch)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->
+			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->
+			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFmpeg)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->
+			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFprobe)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->
+
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Basisu)\binaries\linux-arm64\*" PackagePath="build\tasks\$(TargetFramework)\linux-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Basisu)\binaries\linux-x64\*" PackagePath="build\tasks\$(TargetFramework)\linux-x64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Basisu)\binaries\osx\*" PackagePath="build\tasks\$(TargetFramework)\osx\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Basisu)\binaries\windows-arm64\*" PackagePath="build\tasks\$(TargetFramework)\windows-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Basisu)\binaries\windows-x64\*" PackagePath="build\tasks\$(TargetFramework)\windows-x64\" />
+
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Crunch)\binaries\linux-arm64\*" PackagePath="build\tasks\$(TargetFramework)\linux-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Crunch)\binaries\linux-x64\*" PackagePath="build\tasks\$(TargetFramework)\linux-x64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Crunch)\binaries\osx\*" PackagePath="build\tasks\$(TargetFramework)\osx\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Crunch)\binaries\windows-arm64\*" PackagePath="build\tasks\$(TargetFramework)\windows-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Crunch)\binaries\windows-x64\*" PackagePath="build\tasks\$(TargetFramework)\windows-x64\" />
+
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-arm64\bin\*" PackagePath="build\tasks\$(TargetFramework)\linux-arm64\bin\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-arm64\lib\*" PackagePath="build\tasks\$(TargetFramework)\linux-arm64\lib\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-x64\bin\*" PackagePath="build\tasks\$(TargetFramework)\linux-x64\bin\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\linux-x64\lib\*" PackagePath="build\tasks\$(TargetFramework)\linux-x64\lib\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\osx\bin\*" PackagePath="build\tasks\$(TargetFramework)\osx\bin\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\osx\lib\*" PackagePath="build\tasks\$(TargetFramework)\osx\lib\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-arm64\*" PackagePath="build\tasks\$(TargetFramework)\windows-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\windows-x64\*" PackagePath="build\tasks\$(TargetFramework)\windows-x64\" />
+
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFmpeg)\binaries\linux-arm64\*" PackagePath="build\tasks\$(TargetFramework)\linux-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFmpeg)\binaries\linux-x64\*" PackagePath="build\tasks\$(TargetFramework)\linux-x64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFmpeg)\binaries\osx\*" PackagePath="build\tasks\$(TargetFramework)\osx\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFmpeg)\binaries\windows-arm64\*" PackagePath="build\tasks\$(TargetFramework)\windows-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFmpeg)\binaries\windows-x64\*" PackagePath="build\tasks\$(TargetFramework)\windows-x64\" />
+
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFprobe)\binaries\linux-arm64\*" PackagePath="build\tasks\$(TargetFramework)\linux-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFprobe)\binaries\linux-x64\*" PackagePath="build\tasks\$(TargetFramework)\linux-x64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFprobe)\binaries\osx\*" PackagePath="build\tasks\$(TargetFramework)\osx\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFprobe)\binaries\windows-arm64\*" PackagePath="build\tasks\$(TargetFramework)\windows-arm64\" />
+			<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_FFprobe)\binaries\windows-x64\*" PackagePath="build\tasks\$(TargetFramework)\windows-x64\" />
+			
 		</ItemGroup>
 	</Target>
-
 </Project>
