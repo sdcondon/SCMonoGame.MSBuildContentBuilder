@@ -7,7 +7,6 @@
   </Configurations>
   <Folder Name="/Repo Items/">
     <File Path="../.gitattributes" />
-    <File Path="../.github/workflows/onPush.yml" />
     <File Path="../.github/workflows/onRelease.yml" />
     <File Path="../.gitignore" />
     <File Path="../README.md" />
