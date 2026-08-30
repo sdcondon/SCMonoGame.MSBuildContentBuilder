@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
 
-namespace SCGames.MonoGame.MSBuildContentBuilder.Demo;
+namespace SCMonoGame.MSBuildContentBuilder.Demo;
 
 public class Program : Game
 {

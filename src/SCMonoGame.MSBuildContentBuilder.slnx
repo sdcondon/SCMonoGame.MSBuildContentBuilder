@@ -15,8 +15,8 @@
     <File Path="Exe.props" />
     <File Path="nuget.config" />
   </Folder>
-  <Project Path="SCGames.MonoGame.MSBuildContentBuilder.Demo/SCGames.MonoGame.MSBuildContentBuilder.Demo.csproj" />
-  <Project Path="SCGames.MonoGame.MSBuildContentBuilder/SCGames.MonoGame.MSBuildContentBuilder.csproj">
+  <Project Path="SCMonoGame.MSBuildContentBuilder.Demo/SCMonoGame.MSBuildContentBuilder.Demo.csproj" />
+  <Project Path="SCMonoGame.MSBuildContentBuilder/SCMonoGame.MSBuildContentBuilder.csproj">
     <BuildType Solution="Debug DesktopVK|*" Project="Debug" />
     <BuildType Solution="Debug WindowsDX12|*" Project="Debug" />
     <BuildType Solution="Release DesktopVK|*" Project="Release" />

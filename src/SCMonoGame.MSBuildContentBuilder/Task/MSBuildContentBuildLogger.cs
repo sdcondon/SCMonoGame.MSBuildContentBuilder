@@ -3,7 +3,7 @@ using Microsoft.Build.Utilities;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using System.Diagnostics;
 
-namespace SCGames.MonoGame.MSBuildContentBuilder.Task;
+namespace SCMonoGame.MSBuildContentBuilder.Task;
 
 /// <summary>
 /// Derivation of <see cref="ContentBuildLogger"/> that writes log messages out to an

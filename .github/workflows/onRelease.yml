@@ -28,7 +28,7 @@ jobs:
 
     - name: Build
       run: dotnet build -c "Release DesktopVK" -p:Version=${{ steps.getPackageVersion.outputs.VERSION }}
-      working-directory: ./src/SCGames.MonoGame.ContentBuilder
+      working-directory: ./src/SCMonoGame.MSBuildContentBuilder
 
     - name: Push packages
       run: dotnet nuget push "**/*.nupkg" -s "https://nuget.pkg.github.com/sdcondon" -k "${{ secrets.GITHUB_TOKEN }}"

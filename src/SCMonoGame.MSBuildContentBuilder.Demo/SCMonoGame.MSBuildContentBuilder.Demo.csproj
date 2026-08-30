@@ -25,8 +25,15 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
+		<!-- NB: Need to reference the package, not the project - but also to include 
+		     a project reference to ensure that they build in the correct order: -->
+		<ProjectReference Include="..\SCMonoGame.MSBuildContentBuilder\SCMonoGame.MSBuildContentBuilder.csproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		</ProjectReference>
+		<PackageReference Include="SCMonoGame.MSBuildContentBuilder" Version="0.0.0-local.*" />
+		
 		<PackageReference Include="MonoGame.Framework" Version="3.8.*" />
-		<PackageReference Include="SCGames.MonoGame.MSBuildContentBuilder" Version="0.0.0-local.*" />
+
 	</ItemGroup>
 	<ItemGroup Condition="'$(MonoGamePlatform)' == 'DesktopVK'">
 		<PackageReference Include="MonoGame.Runtime.Mac.Vulkan" Version="3.8.*" />

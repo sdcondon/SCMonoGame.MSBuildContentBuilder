@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Framework.Content.Pipeline.Builder;
 
-namespace SCGames.MonoGame.MSBuildContentBuilder.Task;
+namespace SCMonoGame.MSBuildContentBuilder.Task;
 
 /// <summary>
 /// <para>

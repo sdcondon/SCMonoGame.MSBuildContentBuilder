@@ -5,7 +5,7 @@ using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SCGames.MonoGame.MSBuildContentBuilder;
+namespace SCMonoGame.MSBuildContentBuilder;
 
 internal static class Program
 {

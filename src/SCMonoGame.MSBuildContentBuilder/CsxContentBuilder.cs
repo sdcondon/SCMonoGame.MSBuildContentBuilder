@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Scripting.Hosting;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using MonoGame.Framework.Content.Pipeline.Builder;
 
-namespace SCGames.MonoGame.MSBuildContentBuilder;
+namespace SCMonoGame.MSBuildContentBuilder;
 
 /// <summary>
 /// <para>

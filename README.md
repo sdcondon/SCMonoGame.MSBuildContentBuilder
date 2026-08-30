@@ -1,1 +1,1 @@
-# SCGames.MonoGame.ContentBuilder
+# SCMonoGame.MSBuildContentBuilder
