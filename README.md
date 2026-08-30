@@ -4,7 +4,7 @@
 
 * Build the package project
 * Reference the package in your game.
-* Add one or more `.mbcbs` (MonoGame content build script) to your project, populated with code to populate the MonoGame content collection.
+* Add one or more `.mgcbs` (MonoGame content build script) to your project, populated with code to populate the MonoGame content collection.
   The content collection is provided to the script as the global, meaning your script might look something like:
   ```
   Include("Models/suzanne.fbx", new FbxImporter(), new ModelProcessor()
