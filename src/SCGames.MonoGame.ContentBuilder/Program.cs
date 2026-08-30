@@ -7,9 +7,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SCGames.MonoGame.MSBuildContentBuilder;
 
-public static class Program
+internal static class Program
 {
-    private static ContentBuilderParams defaultBuilderParams = new();
+    private readonly static ContentBuilderParams defaultBuilderParams = new();
 
     public static int Main(string[] args)
     {
@@ -23,11 +23,11 @@ public static class Program
         return builder.Run(builderParams) ? 0 : 1;
     }
 
-    private static bool TryProcessCommandLine(string[] args, [MaybeNullWhen(false)] out ScriptedContentBuilder builder, [MaybeNullWhen(false)] out ContentBuilderParams builderParams)
+    private static bool TryProcessCommandLine(string[] args, [MaybeNullWhen(false)] out CsxContentBuilder builder, [MaybeNullWhen(false)] out ContentBuilderParams builderParams)
     {
         // NB: No support for running as a server, since that makes no sense for a builder that runs in MSBuild
 
-        ScriptedContentBuilder? maybeBuilder = null;
+        CsxContentBuilder? maybeBuilder = null;
         ContentBuilderParams maybeParams = new();
 
         RootCommand command = new("Content builder for MonoGame that reads C# scripts to establish the content to be built.");
@@ -100,15 +100,15 @@ public static class Program
 
         command.SetHandler(cxt =>
         {
-            var files = cxt.ParseResult.GetValueForOption(filesOption).Split(';');
+            var files = cxt.ParseResult.GetValueForOption(filesOption)!.Split(';');
             maybeBuilder = new(files);
 
             maybeParams.Mode = ContentBuilderMode.Builder;
             string workingDir = cxt.ParseResult.GetValueForOption(workingDirectoryOption)!;
             maybeParams.WorkingDirectory = workingDir;
-            maybeParams.SourceDirectory = MakeRelative(workingDir, cxt.ParseResult.GetValueForOption(srcDirectoryOptions));
-            maybeParams.OutputDirectory = MakeRelative(workingDir, cxt.ParseResult.GetValueForOption(outputDirectoryOption));
-            maybeParams.IntermediateDirectory = MakeRelative(workingDir, cxt.ParseResult.GetValueForOption(intermediateDirectoryOption));
+            maybeParams.SourceDirectory = MakeRelative(workingDir, cxt.ParseResult.GetValueForOption(srcDirectoryOptions)!);
+            maybeParams.OutputDirectory = MakeRelative(workingDir, cxt.ParseResult.GetValueForOption(outputDirectoryOption)!);
+            maybeParams.IntermediateDirectory = MakeRelative(workingDir, cxt.ParseResult.GetValueForOption(intermediateDirectoryOption)!);
             maybeParams.Platform = cxt.ParseResult.GetValueForOption(platformOption);
             maybeParams.GraphicsProfile = cxt.ParseResult.GetValueForOption(graphicsProfileOption);
             maybeParams.CompressContent = cxt.ParseResult.GetValueForOption(compressContentOption);

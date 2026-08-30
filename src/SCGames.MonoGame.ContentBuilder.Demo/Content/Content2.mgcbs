@@ -1,2 +1,2 @@
-﻿Include<WildcardRule>("Fonts/Roboto/*.spritefont");
-//IncludeCopy<WildcardRule>("Fonts/Roboto/*.ttf");
+﻿IncludeCopy<WildcardRule>("Fonts/Roboto/*.ttf");
+Include<WildcardRule>("Fonts/Roboto/*.spritefont");

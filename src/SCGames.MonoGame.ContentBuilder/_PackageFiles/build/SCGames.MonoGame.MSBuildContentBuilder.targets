@@ -24,6 +24,7 @@
 	
 	<Target Name="BuildMonoGameContent" BeforeTargets="AfterBuild">
 
+		<!-- TODO: should probably pass 'rebuild' (when doing an MSBuild rebuild) and/or 'log-level' (from build log level) as appropriate -->
 		<Exec Command="dotnet &quot;$(MSBuildThisFileDirectory)tasks\net10.0\$(MSBuildThisFileName).dll&quot; -f &quot;@(MGCBScriptFiles)&quot; -d &quot;$(MGCBWorkingDir)&quot; -s &quot;$(MGCBSourceDir)&quot; -i &quot;$(MGCBIntermediateDir)&quot; -o &quot;$(MGCBOutputDir)&quot; -p &quot;$(MGCBTargetPlatform)&quot; -g &quot;$(MGCBGraphicsProfile)&quot;" />
 		
 		<!--<ScriptedContentBuilderTask

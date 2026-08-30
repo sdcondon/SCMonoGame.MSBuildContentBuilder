@@ -8,7 +8,7 @@ namespace SCGames.MonoGame.MSBuildContentBuilder.Task;
 
 /// <summary>
 /// <para>
-/// MSBuild task that invokes a <see cref="ScriptedContentBuilder"/>.
+/// MSBuild task that invokes a <see cref="CsxContentBuilder"/>.
 /// </para>
 /// <para>
 /// <strong>NB: At present, doesn't really work.</strong> Content builder fails to find the various runtime deps,
@@ -16,7 +16,7 @@ namespace SCGames.MonoGame.MSBuildContentBuilder.Task;
 /// figure out how to apply configuration in such a way that they can all be found robustly.
 /// </para>
 /// </summary>
-public class ScriptedContentBuilderTask : Microsoft.Build.Utilities.Task
+public class MSBuildContentBuilderTask : Microsoft.Build.Utilities.Task
 {
     /// <summary>
     /// Gets or sets the MonoGame content builder script files to be processed.
@@ -74,7 +74,7 @@ public class ScriptedContentBuilderTask : Microsoft.Build.Utilities.Task
 
         var scriptFilePaths = ScriptFiles.Select(f => f.GetMetadata("FullPath")).ToArray();
 
-        ScriptedContentBuilder builder = new(scriptFilePaths)
+        CsxContentBuilder builder = new(scriptFilePaths)
         {
             Logger = new MSBuildContentBuildLogger(Log),
         };

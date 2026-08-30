@@ -25,8 +25,8 @@ internal class MSBuildContentBuildLogger(TaskLoggingHelper log) : ContentBuildLo
             string indent = new(' ', _indentCount * 2);
             string elapsed = LoggerLogLevel <= LogLevel.Debug ? $"{_stopWatch.Elapsed:hh\\:mm\\:ss\\.fff} " : "";
 
-            string[] messageLines = message.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            message = $"{elapsed}{paths}{string.Join("\n", messageLines.Select(l => $"{indent}{l}"))}";
+            var messageLines = message.Split('\n').Select(l => $"{indent}{l}".TrimEnd('\r'));
+            message = $"{elapsed}{paths}{string.Join("\n", messageLines)}";
 
             switch (level)
             {
@@ -52,7 +52,7 @@ internal class MSBuildContentBuildLogger(TaskLoggingHelper log) : ContentBuildLo
     public override void PushFile(string filename)
     {
         string fullPath = Path.GetFullPath(filename);
-        _relativePaths.Push(Path.GetRelativePath(base.LoggerRootDirectory, fullPath));
+        _relativePaths.Push(Path.GetRelativePath(LoggerRootDirectory, fullPath));
     }
 
     public override void PopFile()

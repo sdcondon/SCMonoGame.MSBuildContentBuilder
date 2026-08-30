@@ -16,7 +16,7 @@ namespace SCGames.MonoGame.MSBuildContentBuilder;
 /// instance - and can thus include lines such as "Include&lt;WildcardRule&gt;(..);".
 /// </para>
 /// </summary>
-public class ScriptedContentBuilder(string[] scriptFilePaths) : ContentBuilder
+public class CsxContentBuilder(string[] scriptFilePaths) : ContentBuilder
 {
     /// <inheritdoc />
     public override IContentCollection GetContentCollection()

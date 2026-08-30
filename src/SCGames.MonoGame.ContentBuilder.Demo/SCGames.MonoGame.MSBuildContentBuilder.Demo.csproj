@@ -25,7 +25,7 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="SCGames.MonoGame" Version="0.162.0" />
+		<PackageReference Include="MonoGame.Framework" Version="3.8.*" />
 		<PackageReference Include="SCGames.MonoGame.MSBuildContentBuilder" Version="0.0.0-local.*" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(MonoGamePlatform)' == 'DesktopVK'">
