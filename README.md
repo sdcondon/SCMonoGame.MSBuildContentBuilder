@@ -1,5 +1,7 @@
 # SCMonoGame.MSBuildContentBuilder
 
+A MonoGame 3.8.5 content builder that runs during the MSBuild process. Finds C# script files in the project to populate the content collection.
+
 ## Usage
 
 * Build the package project
