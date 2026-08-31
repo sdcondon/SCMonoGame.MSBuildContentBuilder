@@ -91,8 +91,9 @@
 	</PropertyGroup>
 	<Target Name="CopyToolsToPackage" DependsOnTargets="ResolveReferences">
 		<ItemGroup>
-			<!--I'd LOVE to be able to use the recursive dir match stuff here to make this group much smaller,
-			    but for some reason MSBuild gets *very* confused by having more than one item with a %RecursiveDir in it -->
+			<!--TODO: I'd LOVE to be able to use the recursive dir match stuff here to make this group much smaller,
+			    but for some reason MSBuild gets *very* confused by having more than one item with a %RecursiveDir in it.
+				*Possibly* related to https://github.com/dotnet/msbuild/issues/3121 ? -->
 			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Basisu)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->
 			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Crunch)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->
 			<!--<TfmSpecificPackageFile Include="$(PkgMonoGame_Tool_Dxc)\binaries\**\*" PackagePath="build\tasks\$(TargetFramework)\%(RecursiveDir)%(Filename)%(Extension)" />-->

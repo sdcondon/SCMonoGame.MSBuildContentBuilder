@@ -13,7 +13,6 @@
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Exe.props" />
-    <File Path="nuget.config" />
   </Folder>
   <Project Path="SCMonoGame.MSBuildContentBuilder.Demo/SCMonoGame.MSBuildContentBuilder.Demo.csproj" />
   <Project Path="SCMonoGame.MSBuildContentBuilder/SCMonoGame.MSBuildContentBuilder.csproj">
