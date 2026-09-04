@@ -4,7 +4,7 @@ A MonoGame 3.8.5 content builder that runs during the MSBuild process. Finds C# 
 
 ## Usage
 
-* Build the package project
+* Build the package project. (I've no current plans to publish this on NuGet - since I've no real desire to add another package that I need to maintain).
 * Reference the package in your game.
 * Add one or more `.mgcbs` (MonoGame content build script) files to your project, containing C# code to populate the MonoGame content collection.
   The content collection is provided to the script as the global, meaning your script might look something like:
